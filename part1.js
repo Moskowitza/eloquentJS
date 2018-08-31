@@ -4,16 +4,18 @@
 
 // Unary operators
 //Not all operators are symbols. Some are written as words. 
-console.log(typeof 4.5)
-// → number
-console.log(typeof "x")
+// console.log(typeof 4.5)
+// // → number
+// console.log(typeof "x")
 // → string
 
 // Biary Operators
 // > or < take two arguments, thus: Binary
 
-
-var x = 123;
-console.log(x.toString());            // returns 123 from variable x
-console.log((123).toString());        // returns 123 from literal 123
-console.log((100 + 23).toString());
+let result = 1;
+let counter = 0;
+while (counter < 10) {
+  result = result * 2;
+  counter = counter + 1;
+}
+console.log(result);
