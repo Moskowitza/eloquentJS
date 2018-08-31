@@ -21,11 +21,39 @@
 //   return "You'll never have flying cars";
 // }
 //Power Expression
-const power = (base, exponent) => {
+// const power = (base, exponent) => {
+//     let result = 1;
+//     for (let count = 0; count < exponent; count++) {
+//         result *= base;
+//     }
+//     return result;
+// };
+// console.log(power(2, 8))
+
+const square1 = (x) => { return x * x; };
+const square2 = x => x * x;
+const horn = () => {
+    console.log("Toot");
+  };
+console.log(`function square1 passing in 3 ${square1(3)}`)
+console.log(`function square2 passing in 2 ${square2(2)}`)
+horn();
+
+function greet(who) {
+    console.log("Hello " + who);
+  }
+  greet("Harry");
+  console.log("Bye");
+
+  function power(base, exponent = 2) {
     let result = 1;
     for (let count = 0; count < exponent; count++) {
       result *= base;
     }
     return result;
-  };
-  console.log(power(2,8))
+  }
+  
+  console.log(`power of 4 and exponenet is default ${power(4)}`);
+  // → 16
+  console.log(`power of 2 and exponenet is 6 ${power(2, 6)}`);
+  // → 64
