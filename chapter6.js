@@ -126,12 +126,12 @@ console.log(sym==Symbol("name"));
 Rabbit.prototype[sym]=55;
 console.log(blackRabbit[sym])
 
-const toStringSybmol = Symbol("toString");
-Array.prototype[toStringSybmol]=function(){
+const toStringSymbol = Symbol("toString");
+Array.prototype[toStringSymbol]=function(){
     return `${this.length} cm of blue yarn`;
 }
 console.log([1,2].toString())
-console.log([1,2][toStringSybmol]())
+console.log([1,2][toStringSymbol]())
 
 //more about those square brackets
 //square brakcets access notation: 
@@ -140,3 +140,10 @@ let stringObject={
     [toStringSymbol](){return "a jute rope";}
 }
 console.log(stringObject[toStringSymbol]())
+
+//Symbol.iterator 
+//some how .next updates the object
+let okIterator="OK"[Symbol.iterator]()
+console.log(okIterator.next())
+console.log(okIterator.next())
+console.log(okIterator.next())
