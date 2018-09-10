@@ -28,8 +28,15 @@ class VillageState{
         this.parcels=parcels;
     }
     move(destination){
+        //if there is no destination, return current
         if(!roadGraph[this.place].includes(destination)){
             return this;
+        }else{
+            let parcels=this.parcels.map(p=>{
+                if(p.place !=this.place)return p;
+                return 
+            })
+
         }
     }
 }
