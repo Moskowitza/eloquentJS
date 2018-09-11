@@ -3,14 +3,21 @@ function compareRobots(robot1, memory1, robot2, memory2) {
     let total2 = 0;
     for (let i = 0; i < 100; i++) {
         let state = VillageState.random();
-        total1+=countSteps(state, robot1, memory1);
-        total2+=countSteps(state, robot2, memory2);
+        total1 += countSteps(state, robot1, memory1);
+        total2 += countSteps(state, robot2, memory2);
     }
-console.log(`Robot 1 needs ${total1/100} steps per task` )
-console.log(`Robot2 needed${totat2/100}`)
+    console.log(`Robot 1 needs ${total1 / 100} steps per task`)
+    console.log(`Robot2 needed${totat2 / 100}`)
 }
-compareRobots(routeRobot, [[]])
-
+function countSteps(state, robot, memory) {
+    for (let steps = 0; ; steps++) {
+        if (state.parcels.length == 0) return steps;
+        let action = robot(state, memory)
+        state = state.move(action.direction)
+        memory = action.memory;
+    }
+}
+compareRobots(routeRobot, [], goalOrientedRobot, []);
 
 
 // robotProject.js
@@ -90,20 +97,7 @@ class VillageState {
         }
     }
 }
-// let first = new VillageState(
-//     "Post Office", [{
-//         place: "Post Office",
-//         address: "Alice's House"
-//     }]
-// )
-// let next = first.move("Alice's House")
 
-// console.log(first)
-// console.log(next.place);
-// // // → Alice's House
-// console.log(next.parcels);
-// // // → []
-// console.log(first.place);
 
 //our robot will remember where it has been and where it wants to go
 //villageState has the robot's location, and parcels.
@@ -129,7 +123,7 @@ function randomPick(array) {
 function randomRobot(state) {
     return { direction: randomPick(roadGraph[state.place]) }
 }
-
+// Generate a random Village with parcels to be delivered
 VillageState.random = function (parcelCount = 5) {
     let parcels = [];
     for (let i = 0; i < parcelCount; i++) {
@@ -144,6 +138,7 @@ VillageState.random = function (parcelCount = 5) {
     console.log(result);
     return result;
 }
+
 let speedTest = VillageState.random()
 runRobot(speedTest, randomRobot);
 
@@ -156,6 +151,19 @@ function routeRobot(state, memory) {
     }
     return { direction: memory[0], memory: memory.slice(1) };
 }
+
+function goalOrientedRobot({ place, parcels }, route) {
+    if (route.length == 0) {
+        let parcels = parcels[0];
+        if (parcel.place != place) {
+            route = findRoute(roadGraph, place, parcel.place)
+        } else {
+            route = findRoute(roadGraph, place, parcel.address)
+        }
+    }
+    return {direction: route[0], memory: route.slice(1)}
+}
+
 
 runRobot(speedTest, routeRobot, []);
 //here is the search tool to find a shortest route betwen A,B
