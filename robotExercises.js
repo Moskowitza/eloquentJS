@@ -1,3 +1,18 @@
+function compareRobots(robot1, memory1, robot2, memory2) {
+    let total1 = 0;
+    let total2 = 0;
+    for (let i = 0; i < 100; i++) {
+        let state = VillageState.random();
+        total1+=countSteps(state, robot1, memory1);
+        total2+=countSteps(state, robot2, memory2);
+    }
+console.log(`Robot 1 needs ${total1/100} steps per task` )
+console.log(`Robot2 needed${totat2/100}`)
+}
+compareRobots(routeRobot, [[]])
+
+
+
 // robotProject.js
 const roads = ["Alice's House-Bob's House", "Alice's House-Cabin", "Alice's House-Post Office", "Bob's House-Town Hall", "Daria's House-Ernie's House", "Daria's House-Town Hall", "Ernie's House-Grete's House", "Grete's House-Farm", "Grete's House-Shop", "Marketplace-Farm", "Marketplace-Post Office", "Marketplace-Shop", "Marketplace-Town Hall", "Shop-Town Hall"];
 
@@ -122,52 +137,51 @@ VillageState.random = function (parcelCount = 5) {
         let place;
         do {
             place = randomPick(Object.keys(roadGraph));
-        }while(place==address);
-        parcels.push({place, address})
+        } while (place == address);
+        parcels.push({ place, address })
     }
-    let result= new VillageState("Post Office",parcels);
+    let result = new VillageState("Post Office", parcels);
     console.log(result);
     return result;
 }
-let speedTest=VillageState.random()
+let speedTest = VillageState.random()
 runRobot(speedTest, randomRobot);
 
-const mailRoute = ["Alice's House", "Cabin", "Alice's House", "Bob's House","Town Hall", "Daria's House", "Ernie's House", "Grete's House", "Shop", "Grete's House", "Farm","Marketplace", "Post Office"];
+const mailRoute = ["Alice's House", "Cabin", "Alice's House", "Bob's House", "Town Hall", "Daria's House", "Ernie's House", "Grete's House", "Shop", "Grete's House", "Farm", "Marketplace", "Post Office"];
 
-function routeRobot(state, memory){
+function routeRobot(state, memory) {
     console.log(`route robot memory`)
-    if(memory.length==0){
-        memory=mailRoute;
+    if (memory.length == 0) {
+        memory = mailRoute;
     }
-    return {direction: memory[0], memory: memory.slice(1)};
+    return { direction: memory[0], memory: memory.slice(1) };
 }
 
 runRobot(speedTest, routeRobot, []);
-
 //here is the search tool to find a shortest route betwen A,B
-function findRoute(graph, from, to){
+function findRoute(graph, from, to) {
     //work is an array of objects with at, route attributes
-    let work=[{
-        at:from, //place
-        route:[] //routeArray
-        }];
-    for (let i=0; i <work.length; i++){
+    let work = [{
+        at: from, //place
+        route: [] //routeArray
+    }];
+    for (let i = 0; i < work.length; i++) {
         // go through the work array
-        let {at, route} = work[i];
+        let { at, route } = work[i];
         //go through each place held in graph[at]
-        for(let place of graph[at]){
+        for (let place of graph[at]) {
             //if graph[at]==the to param
             //put graph[at] into the routeArray,
-            if (place==to) return route.concat(place);
-            
-            
+            if (place == to) return route.concat(place);
+
+
             /*some() executes the callback function once
              for each element present in the array until 
              it finds one where callback returns a truthy 
              value (a value that becomes true when converted to a Boolean). */
-             //if we haven't found a path, put it in work
-            if(!work.some(w=>w.at == place)){
-                work.push({at:place, route:route.concat(place)});
+            //if we haven't found a path, put it in work
+            if (!work.some(w => w.at == place)) {
+                work.push({ at: place, route: route.concat(place) });
             }
         }
     }
