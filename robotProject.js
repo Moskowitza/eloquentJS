@@ -146,14 +146,41 @@ runRobot(speedTest, routeRobot, []);
 
 //here is the search tool to find a shortest route betwen A,B
 function findRoute(graph, from, to){
-    let work=[{at:from, route:[]}];
-    for (let i=0; i <work.length;i++){
-        let {at,route}=work[i];
+    //work is an array of objects with at, route attributes
+    let work=[{
+        at:from, //place
+        route:[] //routeArray
+        }];
+    for (let i=0; i <work.length; i++){
+        // go through the work array
+        let {at, route} = work[i];
+        //go through each place held in graph[at]
         for(let place of graph[at]){
-            if (place==to) route.concat(place);
+            //if graph[at]==the to param
+            //put graph[at] into the routeArray,
+            if (place==to) return route.concat(place);
+            
+            
+            /*some() executes the callback function once
+             for each element present in the array until 
+             it finds one where callback returns a truthy 
+             value (a value that becomes true when converted to a Boolean). */
+             //if we haven't found a path, put it in work
             if(!work.some(w=>w.at == place)){
-                work.push({at:place,route:route.concat(place)});
+                work.push({at:place, route:route.concat(place)});
             }
         }
     }
+}
+//goalOrientedRobot
+function goalOrientedRobot({ place, parcels }, route) {
+    if (route.length == 0) {
+        let parcel = parcels[0];
+        if (parcel.place != place) {
+            route = findRoute(roadGraph, place, parcel.place)
+        } else {
+            route = findRoute(roadGraph, place, parcel.address)
+        }
+    }
+    return {direction: route[0], memory: route.slice(1)}
 }
